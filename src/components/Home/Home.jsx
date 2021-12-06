@@ -6,7 +6,7 @@ import './Home.css';
 function Home(){
     const navigate = useNavigate();
     const startPretest = () => {
-        navigate('/pretest/1');        
+        navigate('/master-study-system/pretest/1');        
     }
 
     return (
