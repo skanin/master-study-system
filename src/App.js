@@ -14,8 +14,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/pretest/:pretestId" element={<Pretest />} />
-        <Route path="/" element={<Home />}/>
+        <Route path="master-study-system/pretest/:pretestId" element={<Pretest />} />
+        <Route path="/master-study-system" element={<Home />}/>
       </Routes>
     </Router>
   );
