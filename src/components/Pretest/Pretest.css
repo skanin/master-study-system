@@ -1,0 +1,45 @@
+.main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+}
+
+.left {
+  grid-column: 1;
+  min-height: 100%;
+  min-width: 100%;
+}
+
+.right {
+  grid-column: 2;
+  min-height: 100vh;
+  padding: 10px;
+  min-width: 100%;
+  font-size: medium;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: justify;
+}
+
+#nextButton {
+  align-self: flex-end;
+}
+
+#prevButton {
+  align-self: flex-start;
+}
+
+#submitButton {
+  align-self: center;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  min-width: 100%;
+}
+
+.questionsForm {
+  min-height: 80vh;
+}
