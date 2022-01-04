@@ -1,21 +1,29 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Pre, Line, LineNo, LineContent } from "./styles";
 import Highlight, { defaultProps } from "prism-react-renderer";
 import theme from "prism-react-renderer/themes/vsDark";
 import Prism from "prism-react-renderer/prism";
+
+import codeSnippets from './code_snippets.json';
 
 (typeof global !== "undefined" ? global : window).Prism = Prism;
 
 require("prismjs/components/prism-java");
 
 
-function PretestCode() {
+function PretestCode(props) {
 
-    const code = `
-Public static void main(String[] args){
-    System.out.println("Hello World!");
-}
-        `.trim();
+    const pretestId = props.pretestId;
+
+    const [code, setCode] = React.useState('');
+
+    useEffect(() => {
+        if(!codeSnippets.hasOwnProperty(pretestId)) {
+            setCode('');
+            return;
+        }
+        setCode(codeSnippets[pretestId]);
+    }, [pretestId])
 
     return(
         <Highlight {...defaultProps} theme={theme} code={code} language="java">

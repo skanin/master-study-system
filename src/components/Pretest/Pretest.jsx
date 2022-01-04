@@ -11,8 +11,8 @@ function Pretest() {
 
     return (
         <div className='main'>
-            <PretestCode />
-            <PretestQuestions className='right' pretestId={pretestId}/>
+            <PretestCode pretestId={pretestId} />
+            <PretestQuestions className='right' pretestId={pretestId} />
         </div>
     )
 }

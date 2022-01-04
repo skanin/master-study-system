@@ -23,6 +23,8 @@
 
 #nextButton {
   align-self: flex-end;
+  justify-self: flex-end;
+  flex: right;
 }
 
 #prevButton {

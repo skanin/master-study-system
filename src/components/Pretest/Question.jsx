@@ -1,6 +1,5 @@
 import React from 'react';
-import {Form, FormGroup, Input, Label} from 'reactstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import {FormGroup, Input, Label} from 'reactstrap';
 
 const Question = (props) => {
 

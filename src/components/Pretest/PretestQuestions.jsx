@@ -1,4 +1,7 @@
 import React, { useEffect } from 'react';
+
+import { usePretestAnswers } from '../../hooks';
+
 import {Form} from 'reactstrap';
 import questions from './questions.json';
 import Question from './Question';
@@ -7,21 +10,24 @@ function PretestQuestions(props) {
 
     const pretestId = props.pretestId;
 
-    const [origQuestions, setOrigQuestions] = React.useState(questions);
+    const [getPretestAnswers, setPretestAnswers] = usePretestAnswers();
+    const [origQuestions, setOrigQuestions] = React.useState(getPretestAnswers(pretestId) || questions);
     const [currQuestions, setCurrQuestions] = React.useState([]);
     const [showNextButton, setShowNextButton] = React.useState(false);
     const [showPrevButton, setShowPrevButton] = React.useState(false);
     const [buttonClicked, setButtonClicked] = React.useState(-1);
-    const [answers, setAnswers] = React.useState([]);
+    const [maxPretestId, setMaxPretestId] = React.useState(-1);
 
 
     useEffect(() => {
         generateQuestions();
+        setMaxPretestId(Math.max(...Object.keys(origQuestions)));
     }, [])
 
     const generateQuestions = (nextButton = true) => {
         if(!origQuestions.hasOwnProperty(pretestId)) {
             setCurrQuestions(undefined);
+            return;
         }
 
         let questionsTemp = origQuestions[pretestId].questions;
@@ -41,6 +47,18 @@ function PretestQuestions(props) {
             }
         })
         setOrigQuestions(origQuestions);
+        setPretestAnswers(pretestId, origQuestions);
+    }
+
+
+    const nextPretestTask = () => {
+        setPretestAnswers(pretestId, origQuestions);
+
+        if(parseInt(pretestId) < parseInt(maxPretestId)) {
+            window.location.href = `/master-study-system/pretest/${parseInt(pretestId)+1}`;
+        } else {
+            window.location.href = '/master-study-system/info';
+        }
     }
 
     return(
@@ -51,8 +69,10 @@ function PretestQuestions(props) {
             </Form> : 
             <h1>There are no questions for this pretest task</h1>}
             <div className="buttons">
+                {!showPrevButton && showNextButton && <div></div>}
                 {showPrevButton && <button id='prevButton' onClick={() => {generateQuestions(false)}}>Prev</button>}
-                {!showNextButton && <button id='submitButton'>Submit</button>}
+                {!showNextButton && maxPretestId == pretestId && <button id='submitButton' onClick={() => nextPretestTask()}>Submit</button>}
+                {!showNextButton && maxPretestId > pretestId && <button id='nextPretestTaskButton' onClick={() => nextPretestTask()}>Submit and next</button>}
                 {showNextButton && <button id='nextButton' onClick={() => {generateQuestions()}}>Next</button>}
             </div>
         </div>
