@@ -15,10 +15,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/master-study-system/Info" element={<InformationPage />} />
-        <Route path="/master-study-system/pretest/:pretestId" element={<Pretest />} />
-        <Route path="/master-study-system/login" element={<Login />}/>
-        <Route path="/master-study-system" element={<Home />}/>
+        <Route path="/master-study-system/login" element={<Login />} />
+        <Route path="/master-study-system/Info" element={<PrivateRoute><InformationPage /></PrivateRoute>} />
+        <Route path="/master-study-system/pretest/:pretestId" element={<PrivateRoute><Pretest /></PrivateRoute>} />
+        <Route path="/master-study-system" element={<PrivateRoute><Home /></PrivateRoute>}/>
       </Routes>
     </Router>
   );

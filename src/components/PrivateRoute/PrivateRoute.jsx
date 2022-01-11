@@ -1,27 +1,32 @@
-import { React, useEffect } from 'react';
+import { React, useEffect, useState, useRef} from 'react';
 
-import { Route, Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
 import { useSubject } from '../../hooks';
 
-export { PrivateRoute };
+import {isAuthenticated } from '../Auth/AuthHelperMethods';
 
-function PrivateRoute({ component: Component, ...rest }) {
+function PrivateRoute({ children }) {
     const [subject] = useSubject();
-
-    let access = false;
+    const [isBusy, setBusy] = useState(true);
+    const [access, setAccess] = useState(false);
+    
+    const checkAccess = async () => {
+        await isAuthenticated(subject).then(res => {
+            setAccess(res.data);
+        }).catch(err => {
+            console.log(err);
+            setAccess(false);
+        });
+        setBusy(false);
+    }
 
     useEffect(() => {
-        console.log('Hey')
-    }, [subject])
+        checkAccess();
+    }, []);
 
-    return (
-        <Route {...rest} render={props => {
-            if (true) {
-                return <Navigate to={{ pathname: '/login', state: { from: props.location } }} />
-            }
+    return access ? children : isBusy ? <span></span> : (<Navigate to={{ pathname: '/master-study-system/login'}} />);
 
-            return <Component {...props} />
-        }} />
-    );
 }
+
+export { PrivateRoute };
