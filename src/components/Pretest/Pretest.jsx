@@ -1,20 +1,20 @@
-import React from 'react'
-import { useParams } from "react-router-dom";
+import React from 'react';
+import { useParams } from 'react-router-dom';
 
 import PretestCode from './PretestCode';
 
-import './Pretest.css'
+import './Pretest.css';
 import PretestQuestions from './PretestQuestions';
 
 function Pretest() {
-    const { pretestId } = useParams()
+	const { pretestId } = useParams();
 
-    return (
-        <div className='main'>
-            <PretestCode pretestId={pretestId} />
-            <PretestQuestions className='right' pretestId={pretestId} />
-        </div>
-    )
+	return (
+		<div className="main">
+			<PretestCode pretestId={pretestId} />
+			<PretestQuestions className="right" pretestId={pretestId} />
+		</div>
+	);
 }
 
 export default Pretest;

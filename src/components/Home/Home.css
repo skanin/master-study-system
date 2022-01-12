@@ -1,36 +1,36 @@
 html,
 body {
-  margin: 0 auto;
-  font-family: "Gothic A1";
-  font-size: 20px;
+	margin: 0 auto;
+	font-family: 'Gothic A1';
+	font-size: 20px;
 }
 
 body {
-  background-color: #eeee;
+	background-color: #eeee;
 }
 
 .container {
-  /* background-color: #eeeeee; */
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+	/* background-color: #eeeeee; */
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .informationText {
-  max-width: 50%;
-  text-align: center;
+	max-width: 50%;
+	text-align: center;
 }
 
 .startButton {
-  border-radius: 10px;
-  width: 20%;
-  height: 5%;
-  background-color: #4a4a4a;
-  color: #ffffff;
-  font-size: large;
+	border-radius: 10px;
+	width: 20%;
+	height: 5%;
+	background-color: #4a4a4a;
+	color: #ffffff;
+	font-size: large;
 }
 
 .startButton:hover {
-  cursor: pointer;
+	cursor: pointer;
 }

@@ -1,32 +1,39 @@
-import { React, useEffect, useState, useRef} from 'react';
+import { React, useEffect, useState, useRef } from 'react';
 
 import { Navigate, useLocation } from 'react-router-dom';
 
 import { useSubject } from '../../hooks';
 
-import {isAuthenticated } from '../Auth/AuthHelperMethods';
+import { isAuthenticated } from '../Auth/AuthHelperMethods';
 
 function PrivateRoute({ children }) {
-    const [subject] = useSubject();
-    const [isBusy, setBusy] = useState(true);
-    const [access, setAccess] = useState(false);
-    
-    const checkAccess = async () => {
-        await isAuthenticated(subject).then(res => {
-            setAccess(res.data);
-        }).catch(err => {
-            console.log(err);
-            setAccess(false);
-        });
-        setBusy(false);
-    }
+	const [subject] = useSubject();
+	const [isBusy, setBusy] = useState(true);
+	const [access, setAccess] = useState(false);
 
-    useEffect(() => {
-        checkAccess();
-    }, []);
+	const checkAccess = async () => {
+		await isAuthenticated(subject)
+			.then((res) => {
+				setAccess(res.data);
+			})
+			.catch((err) => {
+				console.log(err);
+				setAccess(false);
+			});
+		setBusy(false);
+	};
 
-    return access ? children : isBusy ? <span></span> : (<Navigate to={{ pathname: '/master-study-system/login'}} />);
+	useEffect(() => {
+		checkAccess();
+	}, []);
 
+	return access ? (
+		children
+	) : isBusy ? (
+		<span></span>
+	) : (
+		<Navigate to={{ pathname: '/master-study-system/login' }} />
+	);
 }
 
 export { PrivateRoute };

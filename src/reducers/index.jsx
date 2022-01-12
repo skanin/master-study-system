@@ -1,9 +1,9 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 
 import subjectReducer from './subjectReducer';
 
 const allReducers = combineReducers({
-    subject: subjectReducer
+	subject: subjectReducer,
 });
 
 export default allReducers;
