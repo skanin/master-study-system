@@ -1,21 +1,21 @@
 import React, { useEffect } from 'react';
 
 import { usePretestAnswers } from '../../hooks';
+import { useParams } from 'react-router-dom';
 import { fetch } from '../Auth/AuthHelperMethods';
 import { Form } from 'reactstrap';
-import questions from './questions.json';
+import questions from '../../data/questions_pretest.json';
 import Question from './Question';
 
 function PretestQuestions(props) {
-	const pretestId = parseInt(props.pretestId);
-	console.log(questions);
+	const { taskId } = useParams();
 	const [getPretestAnswers, setPretestAnswers] = usePretestAnswers();
 	const [origQuestions, setOrigQuestions] = React.useState(
-		getPretestAnswers(pretestId) || {
-			questions: questions[pretestId].questions.map((q, i) => {
+		getPretestAnswers(taskId) || {
+			questions: questions[taskId].questions.map((q, i) => {
 				return {
 					...q,
-					questionId: pretestId + '-' + (parseInt(i) + 1),
+					questionId: taskId + '-' + (parseInt(i) + 1),
 				};
 			}),
 		}
@@ -32,10 +32,6 @@ function PretestQuestions(props) {
 	}, []);
 
 	const generateQuestions = (nextButton = true) => {
-		// if(!origQuestions.hasOwnProperty(pretestId)) {
-		//     setCurrQuestions(undefined);
-		//     return;
-		// }
 		if (!origQuestions) {
 			setCurrQuestions(undefined);
 			return;
@@ -49,7 +45,7 @@ function PretestQuestions(props) {
 			tmpButtonClicked * 3 >= Math.floor(questionsTemp.length / 3)
 		);
 		setButtonClicked(tmpButtonClicked);
-		console.log(maxPretestId, pretestId);
+		console.log(maxPretestId, taskId);
 		setCurrQuestions([
 			...questionsTemp.slice(
 				tmpButtonClicked * 3,
@@ -70,15 +66,15 @@ function PretestQuestions(props) {
 			}
 		});
 		setOrigQuestions(origQuestions);
-		setPretestAnswers(pretestId, origQuestions);
+		setPretestAnswers(taskId, origQuestions);
 	};
 
 	const nextPretestTask = async () => {
-		setPretestAnswers(pretestId, origQuestions);
+		setPretestAnswers(taskId, origQuestions);
 
-		if (parseInt(pretestId) < maxPretestId) {
+		if (parseInt(taskId) < maxPretestId) {
 			window.location.href =
-				'/master-study-system/pretest/' + (parseInt(pretestId) + 1);
+				'/master-study-system/pretest/' + (parseInt(taskId) + 1);
 		} else {
 			let data = { questions: [] };
 			for (let i = 1; i <= maxPretestId; i++) {
@@ -136,12 +132,12 @@ function PretestQuestions(props) {
 						Prev
 					</button>
 				)}
-				{!showNextButton && maxPretestId == pretestId && (
+				{!showNextButton && maxPretestId === parseInt(taskId) && (
 					<button id="submitButton" onClick={() => nextPretestTask()}>
 						Submit
 					</button>
 				)}
-				{!showNextButton && maxPretestId > pretestId && (
+				{!showNextButton && maxPretestId > taskId && (
 					<button
 						id="nextPretestTaskButton"
 						onClick={() => nextPretestTask()}>

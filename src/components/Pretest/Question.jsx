@@ -10,7 +10,7 @@ const Question = (props) => {
 					name={'radio' + props.id}
 					type="radio"
 					id={index}
-					defaultChecked={index == props.checked}
+					defaultChecked={index === props.checked}
 				/>{' '}
 				<Label check>{answer}</Label>
 			</FormGroup>

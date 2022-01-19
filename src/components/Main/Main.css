@@ -1,0 +1,90 @@
+.main {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 4fr 1fr;
+	height: 100vh;
+}
+
+.right {
+	grid-column: 2;
+	grid-row: 1;
+	padding: 0.5rem;
+	min-width: 100%;
+	font-size: medium;
+	overflow-x: hidden;
+	/* overflow-y: auto; */
+	overflow-y: hidden;
+	text-align: justify;
+}
+
+.pretestRight {
+	min-height: 100vh;
+}
+
+.studyRight {
+	min-height: 80vh;
+}
+
+.bottom {
+	grid-column-start: 1;
+	grid-column-end: 3;
+	grid-row: 2;
+	background-color: #e5e5e5;
+	padding: 0.5rem;
+	font-size: smaller;
+	display: grid;
+	grid-template-columns: 8fr 2fr;
+}
+
+#questionDiv {
+	grid-column: 1;
+}
+
+#buttonsDiv {
+	grid-column: 2;
+	margin-left: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+}
+
+#buttonsDiv > button {
+	margin: 0.5rem;
+	border-radius: 10px;
+	background-color: #4a4a4a;
+	color: #ffffff;
+	font-size: large;
+}
+
+#question {
+	max-width: 75%;
+	resize: none;
+	font-size: smaller;
+	min-height: fit-content;
+	min-width: 100%;
+}
+
+#nextButton {
+	align-self: flex-end;
+	justify-self: flex-end;
+	flex: right;
+}
+
+#prevButton {
+	align-self: flex-start;
+}
+
+#submitButton {
+	align-self: center;
+}
+
+.buttons {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 10px;
+	min-width: 100%;
+}
+
+.questionsForm {
+	min-height: 80vh;
+}

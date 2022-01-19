@@ -4,24 +4,25 @@ import Highlight, { defaultProps } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/vsDark';
 import Prism from 'prism-react-renderer/prism';
 
-import codeSnippets from './code_snippets.json';
+//
 
 (typeof global !== 'undefined' ? global : window).Prism = Prism;
 
 require('prismjs/components/prism-java');
 
-function PretestCode(props) {
-	const pretestId = props.pretestId;
-
+function Code(props) {
+	const taskId = props.taskId;
+	const codeSnippets = props.codeSnippets;
+	console.log(codeSnippets);
 	const [code, setCode] = React.useState('');
 
 	useEffect(() => {
-		if (!codeSnippets.hasOwnProperty(pretestId)) {
+		if (!codeSnippets.hasOwnProperty(taskId)) {
 			setCode('');
 			return;
 		}
-		setCode(codeSnippets[pretestId]);
-	}, [pretestId]);
+		setCode(codeSnippets[taskId]);
+	}, [taskId, codeSnippets]);
 
 	return (
 		<Highlight {...defaultProps} theme={theme} code={code} language="java">
@@ -46,4 +47,4 @@ function PretestCode(props) {
 	);
 }
 
-export default PretestCode;
+export default Code;

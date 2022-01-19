@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from 'react';
 import { Form, Label, FormGroup, Input } from 'reactstrap';
 import { useSubject } from '../../hooks';
-import { useNavigate, useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { isAuthenticated, fetch } from './AuthHelperMethods';
 import './Login.css';
 
@@ -24,7 +24,7 @@ const Login = () => {
 
 	useEffect(() => {
 		checkAccess();
-	}, [subject]);
+	});
 
 	const setSubjectAsyc = async (subject) => {
 		return Promise.resolve(setSubject(subject));
@@ -59,8 +59,7 @@ const Login = () => {
 				<Form
 					onSubmit={(e) => {
 						e.preventDefault();
-					}}
-				>
+					}}>
 					<FormGroup>
 						<Label for="username">Username</Label>
 						<Input

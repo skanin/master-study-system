@@ -8,11 +8,10 @@ import PretestQuestions from './components/Pretest/PretestQuestions';
 
 import pretestCodesnippets from './data/code_snippets_pretest.json';
 import studyQuestions from './data/questions_study.json';
-import CustomRouter from './CustomRouter';
 
 import { PrivateRoute } from './components/PrivateRoute/PrivateRoute';
 
-import { BrowserRouter as Router, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import HelpVideo from './components/Study/HelpVideo';
 import StudyQuestion from './components/Study/StudyQuestion';
 
@@ -63,58 +62,26 @@ const routes = [
 	},
 ];
 
-function App() {
-	return (
-		<Router>
-			<CustomRouter />;
-		</Router>
-	);
+function CustomRouter() {
+	const theLocation = useLocation();
 
-	// <Router>
-	// 	<Routes>
-	// 		<Route path="/master-study-system/login" element={<Login />} />
-	// 		<Route
-	// 			path="/master-study-system/Info"
-	// 			element={
-	// 				<PrivateRoute>
-	// 					<InformationPage />
-	// 				</PrivateRoute>
-	// 			}
-	// 		/>
-	// 		<Route
-	// 			path="/master-study-system/pretest/:taskId"
-	// 			element={
-	// 				<PrivateRoute>
-	// 					<Main codeSnippets={pretestCodesnippets}>
-	// 						<PretestQuestions className="right pretestRight" />
-	// 					</Main>
-	// 				</PrivateRoute>
-	// 			}
-	// 		/>
-	// 		<Route
-	// 			path="/master-study-system/task/:taskId"
-	// 			element={
-	// 				<PrivateRoute>
-	// 					<Main codeSnippets={pretestCodesnippets}>
-	// 						<HelpVideo className="right studyRight" />
-	// 						<StudyQuestion
-	// 							questions={studyQuestions}
-	// 							className="bottom"
-	// 						/>
-	// 					</Main>
-	// 				</PrivateRoute>
-	// 			}
-	// 		/>
-	// 		<Route
-	// 			path="/master-study-system"
-	// 			element={
-	// 				<PrivateRoute>
-	// 					<Home />
-	// 				</PrivateRoute>
-	// 			}
-	// 		/>
-	// 	</Routes>
-	// </Router>
+	const pathArr = theLocation.pathname.split('/');
+
+	const currentLocation =
+		pathArr.length === 2 ? pathArr[1] : pathArr.slice(2).join(' ');
+
+	useEffect(() => {
+		document.title = `
+        ${currentLocation[0].toUpperCase()}${currentLocation.slice(1)}`;
+	}, [currentLocation]);
+
+	return (
+		<Routes>
+			{routes.map((route, index) => (
+				<Route key={index} path={route.path} element={route.element} />
+			))}
+		</Routes>
+	);
 }
 
-export default App;
+export default CustomRouter;

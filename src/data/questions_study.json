@@ -1,0 +1,10 @@
+{
+	"1": {
+		"question": "Which line(s) contains bugs?",
+		"taskType": "Debug"
+	},
+	"2": {
+		"question": "What is the purpose of this code?",
+		"taskType": "Comprehension"
+	}
+}

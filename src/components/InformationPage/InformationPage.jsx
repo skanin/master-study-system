@@ -8,7 +8,7 @@ const InformationPage = () => {
 	console.log(subject);
 
 	const startStudy = () => {
-		window.location.href = '/master-study-system/study/task/1';
+		window.location.href = '/master-study-system/task/1';
 	};
 
 	const generateHelpText = () => {
@@ -53,7 +53,7 @@ const InformationPage = () => {
 				{generateHelpText()}
 			</div>
 			<button className="startButton" onClick={() => startStudy()}>
-				Start test
+				Start study
 			</button>
 		</div>
 	);
