@@ -3,7 +3,6 @@ import { FormGroup, Input, Label } from 'reactstrap';
 
 const Question = (props) => {
 	const generateAnswers = () => {
-		console.log(props.checked);
 		return props.answers.map((answer, index) => (
 			<FormGroup key={index} check>
 				<Input

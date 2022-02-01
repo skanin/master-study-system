@@ -5,7 +5,6 @@ function findStorageItems(query) {
 		if (window.sessionStorage.hasOwnProperty(i)) {
 			if (i.match(query) || (!query && typeof i === 'string')) {
 				const value = JSON.parse(window.sessionStorage.getItem(i));
-				// results.push({ key: i, val: value });
 				results[i] = value;
 			}
 		}
@@ -30,11 +29,9 @@ export const useStudyAnswers = () => {
 			);
 			for (let id of taskId) {
 				if (!keys.includes(id)) {
-					// items.push({ key: `studyTask${id}`, val: '' });
 					items[`studyTask${id}`] = null;
 				}
 			}
-			console.log(items);
 			return items;
 		}
 

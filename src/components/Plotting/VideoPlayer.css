@@ -1,0 +1,64 @@
+.time {
+	margin-right: 0.5rem;
+}
+
+#videoControls {
+	position: absolute;
+	bottom: 0;
+	width: auto;
+	transition: opacity 0.2s ease-in-out;
+	opacity: 0;
+	font-size: small;
+}
+
+#scanpathOverlay:hover ~ #videoControls {
+	opacity: 1;
+}
+
+#videoControls:hover {
+	opacity: 1;
+}
+
+.disappearRate {
+	position: absolute;
+	left: 36rem;
+	bottom: 0.5rem;
+}
+
+.disappear {
+	margin-left: 0.5rem;
+}
+
+input[type='range'] {
+	-webkit-appearance: none;
+	width: 180px;
+	margin: 6px 0;
+	background: none;
+}
+
+input[type='range']:focus {
+	outline: none;
+}
+
+/* Slider */
+
+input[type='range']::-webkit-slider-runnable-track {
+	width: 100%;
+	height: 8px;
+	cursor: pointer;
+	box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
+	background: black;
+	border-radius: 1.9px;
+	border: 0px solid rgba(1, 1, 1, 0);
+}
+
+/* Slider button */
+
+input[type='range']::-webkit-slider-thumb {
+	height: 20px;
+	width: 10px;
+	background: white;
+	cursor: pointer;
+	-webkit-appearance: none;
+	margin-top: -6px;
+}

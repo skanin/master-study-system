@@ -4,6 +4,8 @@ import Home from './components/Home/Home';
 import Main from './components/Main/Main';
 import InformationPage from './components/InformationPage/InformationPage';
 import Login from './components/Auth/Login';
+import Plotting from './components/Plotting/Plotting';
+
 import PretestQuestions from './components/Pretest/PretestQuestions';
 
 import pretestCodesnippets from './data/code_snippets_pretest.json';
@@ -51,6 +53,10 @@ const routes = [
 				</Main>
 			</PrivateRoute>
 		),
+	},
+	{
+		path: '/master-study-system/plotting',
+		element: <Plotting />,
 	},
 	{
 		path: '/master-study-system',

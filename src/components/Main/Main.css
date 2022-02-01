@@ -8,11 +8,9 @@
 .right {
 	grid-column: 2;
 	grid-row: 1;
-	padding: 0.5rem;
 	min-width: 100%;
 	font-size: medium;
 	overflow-x: hidden;
-	/* overflow-y: auto; */
 	overflow-y: hidden;
 	text-align: justify;
 }
@@ -22,7 +20,7 @@
 }
 
 .studyRight {
-	min-height: 80vh;
+	height: 100%;
 }
 
 .bottom {

@@ -1,6 +1,6 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState } from 'react';
 
-import { useStudyAnswers, useSubject } from '../../hooks';
+import { useStudyAnswers, useSubject, useMountEffect } from '../../hooks';
 
 import { Input, FormGroup, Form, Label } from 'reactstrap';
 
@@ -12,8 +12,9 @@ const StudyQuestion = (props) => {
 	const [question, setQuestion] = useState({});
 	const [getStudyAnswers, setStudyAnswers] = useStudyAnswers();
 	const [maxTaskId, setMaxTaskId] = useState(-1);
+	const [helpVisible, setHelpVisible] = useState(false);
 
-	useEffect(() => {
+	useMountEffect(() => {
 		setMaxTaskId(Math.max(...Object.keys(props.questions)));
 		if (
 			!props.questions.hasOwnProperty(props.taskId) &&
@@ -39,7 +40,7 @@ const StudyQuestion = (props) => {
 		}
 		setQuestion(props.questions[props.taskId]);
 		setAnswer(getStudyAnswers(props.taskId));
-	}, [props.questions, props.taskId]);
+	});
 
 	const handleChange = (e) => {
 		setAnswer(e.target.value);
@@ -76,6 +77,14 @@ const StudyQuestion = (props) => {
 		}
 	};
 
+	const onHelpChange = () => {
+		let help = document.getElementById('videoBg');
+
+		help.style.pointerEvents = helpVisible ? 'none' : 'auto';
+		help.style.opacity = helpVisible ? 0 : 1;
+		setHelpVisible(!helpVisible);
+	};
+
 	return (
 		<div className={props.className}>
 			<div id="questionDiv">
@@ -99,7 +108,13 @@ const StudyQuestion = (props) => {
 				</Form>
 			</div>
 			<div id="buttonsDiv">
-				<button>Get help</button>
+				{subject.helpType === 2 ? (
+					!helpVisible ? (
+						<button onClick={onHelpChange}>Get help</button>
+					) : (
+						<button onClick={onHelpChange}>Hide help</button>
+					)
+				) : null}
 				<button onClick={handleSubmit}>Submit and next</button>
 			</div>
 		</div>

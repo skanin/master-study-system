@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useMountEffect } from '../../hooks';
 import { Pre, Line, LineNo, LineContent } from './styles';
 import Highlight, { defaultProps } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/vsDark';
@@ -13,16 +14,15 @@ require('prismjs/components/prism-java');
 function Code(props) {
 	const taskId = props.taskId;
 	const codeSnippets = props.codeSnippets;
-	console.log(codeSnippets);
 	const [code, setCode] = React.useState('');
 
-	useEffect(() => {
+	useMountEffect(() => {
 		if (!codeSnippets.hasOwnProperty(taskId)) {
 			setCode('');
 			return;
 		}
 		setCode(codeSnippets[taskId]);
-	}, [taskId, codeSnippets]);
+	});
 
 	return (
 		<Highlight {...defaultProps} theme={theme} code={code} language="java">

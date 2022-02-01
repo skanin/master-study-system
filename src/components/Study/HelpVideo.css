@@ -1,0 +1,9 @@
+#videoBg {
+	opacity: 0;
+	pointer-events: none;
+}
+
+#blurOverlay {
+	height: 100%;
+	width: 100%;
+}

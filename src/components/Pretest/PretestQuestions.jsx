@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
-import { usePretestAnswers } from '../../hooks';
+import { usePretestAnswers, useMountEffect } from '../../hooks';
 import { useParams } from 'react-router-dom';
 import { fetch } from '../Auth/AuthHelperMethods';
 import { Form } from 'reactstrap';
@@ -26,10 +26,10 @@ function PretestQuestions(props) {
 	const [buttonClicked, setButtonClicked] = React.useState(-1);
 	const [maxPretestId, setMaxPretestId] = React.useState(-1);
 
-	useEffect(() => {
+	useMountEffect(() => {
 		generateQuestions();
 		setMaxPretestId(Math.max(...Object.keys(questions)));
-	}, []);
+	});
 
 	const generateQuestions = (nextButton = true) => {
 		if (!origQuestions) {
@@ -45,7 +45,6 @@ function PretestQuestions(props) {
 			tmpButtonClicked * 3 >= Math.floor(questionsTemp.length / 3)
 		);
 		setButtonClicked(tmpButtonClicked);
-		console.log(maxPretestId, taskId);
 		setCurrQuestions([
 			...questionsTemp.slice(
 				tmpButtonClicked * 3,
@@ -91,7 +90,6 @@ function PretestQuestions(props) {
 					data.questions.push(question);
 				});
 			}
-			alert(JSON.stringify(data));
 			await fetch('post', `/pretest`, data)
 				.then((res) => {
 					window.location.href = '/master-study-system/info';
