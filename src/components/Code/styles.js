@@ -16,7 +16,9 @@ export const Pre = styled.pre`
 		height: 1.3em;
 	}
 	margin: 0;
-	grid-column: 1;
+	grid-column-start: 1;
+	grid-column-end: 3;
+	font-size: 1rem;
 `;
 
 export const Line = styled.div`

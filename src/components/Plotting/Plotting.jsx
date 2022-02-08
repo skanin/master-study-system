@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Plot from 'react-plotly.js';
 
 import { fetch } from '../Auth/AuthHelperMethods';
@@ -8,8 +8,19 @@ import './Plotting.css';
 import './VideoPlayer.css';
 
 import { BiPauseCircle, BiPlayCircle } from 'react-icons/bi';
+import { useStopwatch } from 'react-timer-hook';
 
 const Plotting = ({ taskId, fromStudy }) => {
+	const [startTime, setStartTime] = useState();
+	const [pauseTime, setPauseTime] = useState();
+	const [pauseTimeDur, setPauseTimeDur] = useState(0);
+	const [offset, setOffset] = useState(0);
+
+	const { seconds, minutes, hours, days, isRunning, start, pause, reset } =
+		useStopwatch({ autoStart: false });
+
+	const [hasStarted, setHasStarted] = useState(false);
+
 	const [data, setData] = useState([]);
 	const dataRef = useRef(data);
 
@@ -56,14 +67,18 @@ const Plotting = ({ taskId, fromStudy }) => {
 	const msRef = useRef(ms);
 	msRef.current = ms;
 
-	const [msTimer] = useState(
+	const [donePlaying, setDonePlaying] = useState(false);
+	const donePlayingRef = useRef(donePlaying);
+	donePlayingRef.current = donePlaying;
+
+	const [msTimer, setMsTimer] = useState(
 		new Timer(() => {
 			setMs((ms) => ms + 10);
 			updateData();
-		}, 1e-3)
+		}, 0.5e-3)
 	);
 
-	const [sTimer] = useState(
+	const [sTimer, setSTimer] = useState(
 		new Timer(() => {
 			setCurrTime((currTime) => currTime + 1);
 		}, 1000)
@@ -95,17 +110,42 @@ const Plotting = ({ taskId, fromStudy }) => {
 	};
 
 	const updateData = () => {
+		// setScatter(
+		// 	formatData(
+		// 		dataRef.current.filter(
+		// 			(d) =>
+		// 				parseFloat(d.end_ms) <= msRef.current &&
+		// 				msRef.current <=
+		// 					parseFloat(d.end_ms) + disappearRef.current * 1000
+		// 		)
+		// 	)
+		// );
+
+		let d = new Date();
+
+		d.setSeconds(d.getSeconds() + offset);
+		const time = isRunning
+			? d - startTime - (pauseTimeDur || 0) + offset * 1000
+			: seconds * 1000;
 		setScatter(
 			formatData(
 				dataRef.current.filter(
 					(d) =>
-						parseFloat(d.end_ms) <= msRef.current &&
-						msRef.current <=
+						parseFloat(d.end_ms) <= time &&
+						time <=
 							parseFloat(d.end_ms) + disappearRef.current * 1000
 				)
 			)
 		);
 	};
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			if (isRunning) updateData();
+			if (seconds >= maxS) pause();
+		}, 1e-3);
+		return () => clearInterval(interval);
+	}, [updateData, pauseTime, pauseTimeDur]);
 
 	useMountEffect(() => {
 		fetch('get', '/data/' + (taskId || '1'))
@@ -162,23 +202,46 @@ const Plotting = ({ taskId, fromStudy }) => {
 	}
 
 	const pauseTimers = () => {
-		sTimer.pause();
 		msTimer.pause();
+		sTimer.pause();
 		setPlaying(false);
 	};
 
-	const resumeTimers = () => {
-		sTimer.resume();
-		msTimer.resume();
-		setPlaying(true);
+	const resumeTimers = (start = 0) => {
+		// sTimer.resume();
+		// msTimer.resume();
+		// setPlaying(true);
+		start();
 	};
 
 	const onPlay = () => {
+		if (!hasStarted) {
+			setHasStarted(true);
+			// setPauseTime(new Date());
+			setStartTime(new Date());
+		}
+
 		if (playing) {
-			pauseTimers();
+			// pauseTimers();
+			setPauseTime(new Date());
+			pause();
+			setPlaying(false);
 		} else {
+			// console.log('New date - pauseTime: ', new Date() - pauseTime);
+			// console.log('PauseTimeDur: ', pauseTimeDur);
+			// let tmp = new Date() - pauseTime;
+			// let tmp2 = pauseTimeDur;
+
+			// console.log('tmp+tmp2: ', tmp + tmp2);
+
+			setPauseTimeDur(
+				(pauseTimeDur) => (new Date() - pauseTime || 0) + pauseTimeDur
+			);
+			// setPauseTimeDur(new Date() - pauseTime);
 			updateData();
-			resumeTimers();
+			// resumeTimers();
+			start();
+			setPlaying(true);
 		}
 	};
 
@@ -207,10 +270,21 @@ const Plotting = ({ taskId, fromStudy }) => {
 	}
 
 	const onPlayTimeChange = (e) => {
-		setCurrTime(parseInt(e.target.value));
-		setMs(parseInt(e.target.value) * 1000);
-		updateData();
-		resumeTimers();
+		// setCurrTime(parseInt(e.target.value));
+		// setMs(parseInt(e.target.value) * 1000);
+		// updateData();
+		// if (!playing) {
+		// 	pauseTimers();
+		// 	resumeTimers();
+		// }
+		setOffset(parseFloat(e.target.value));
+		let d = new Date();
+		d.setSeconds(d.getSeconds() + parseInt(e.target.value));
+		let tmp = startTime;
+		tmp.setSeconds(tmp.getSeconds() + parseInt(e.target.value));
+		setStartTime(d);
+		setPlaying(true);
+		reset(d);
 	};
 
 	return (
@@ -246,7 +320,8 @@ const Plotting = ({ taskId, fromStudy }) => {
 					</span>
 					<span className="time">
 						<span className="video_time">
-							{getHHMMSSFromSeconds(currTime)}
+							{/*getHHMMSSFromSeconds(currTime)*/}
+							{hours + ':' + minutes + ':' + seconds}
 						</span>
 						<span>/</span>
 						<span className="video_length">
@@ -260,7 +335,7 @@ const Plotting = ({ taskId, fromStudy }) => {
 						step={0.1}
 						min={0}
 						max={maxS}
-						value={currTime}
+						value={seconds}
 						onChange={onPlayTimeChange}
 					/>
 

@@ -1,6 +1,6 @@
 import { React, useEffect, useState } from 'react';
 import { Form, Label, FormGroup, Input } from 'reactstrap';
-import { useSubject } from '../../hooks';
+import { useSubject, useMountEffect } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
 import { isAuthenticated, fetch } from './AuthHelperMethods';
 import './Login.css';
@@ -15,14 +15,18 @@ const Login = () => {
 	const checkAccess = async () => {
 		await isAuthenticated(subject)
 			.then((res) => {
-				navigate('/master-study-system');
+				if (subject.helpType !== 4) {
+					navigate('/master-study-system');
+				} else {
+					navigate('/master-study-system/info');
+				}
 			})
 			.catch((err) => {
 				console.log(err);
 			});
 	};
 
-	useEffect(() => {
+	useMountEffect(() => {
 		checkAccess();
 	});
 
@@ -41,7 +45,11 @@ const Login = () => {
 						helpType: res.data.helpType,
 						subject: res.data.subject,
 					}).then(() => {
-						navigate('/master-study-system');
+						if (res.data.helpType !== 4) {
+							navigate('/master-study-system');
+						} else {
+							navigate('/master-study-system/info');
+						}
 					});
 				}
 			})

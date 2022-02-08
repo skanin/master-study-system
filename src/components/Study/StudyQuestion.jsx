@@ -54,7 +54,7 @@ const StudyQuestion = (props) => {
 			const data = {
 				answers: Object.entries(
 					getStudyAnswers([
-						...[...Array(10).keys()].map((i) => i + 1),
+						...[...Array(maxTaskId).keys()].map((i) => i + 1),
 					])
 				).map((a) => {
 					return { [a[0]]: a[1] };
@@ -64,7 +64,7 @@ const StudyQuestion = (props) => {
 			await fetch('POST', '/study', data)
 				.then((res) => {
 					if (res.status === 200) {
-						window.location.href = '/summary';
+						window.location.href = '/master-study-system/summary';
 					}
 				})
 				.catch((err) => {
@@ -78,14 +78,27 @@ const StudyQuestion = (props) => {
 	};
 
 	const onHelpChange = () => {
-		let help = document.getElementById('videoBg');
+		const codeSection = document.getElementById('codeSection');
+		const helpSection = document.getElementById('videoBg');
 
-		help.style.pointerEvents = helpVisible ? 'none' : 'auto';
-		help.style.opacity = helpVisible ? 0 : 1;
+		helpSection.style.display = helpVisible ? 'none' : 'block';
+		codeSection.style.gridColumnEnd = helpVisible ? '3' : '2';
+
 		setHelpVisible(!helpVisible);
 	};
 
-	return (
+	const expertOnNext = (e) => {
+		e.preventDefault();
+		if (parseInt(props.taskId) === maxTaskId) {
+			window.location.href = '/master-study-system/thanks';
+		} else {
+			window.location.href = `/master-study-system/task/${
+				parseInt(props.taskId) + 1
+			}`;
+		}
+	};
+
+	return props.show ? (
 		<div className={props.className}>
 			<div id="questionDiv">
 				<span>
@@ -117,6 +130,10 @@ const StudyQuestion = (props) => {
 				) : null}
 				<button onClick={handleSubmit}>Submit and next</button>
 			</div>
+		</div>
+	) : (
+		<div id="expertSection">
+			<button onClick={expertOnNext}>Next problem</button>
 		</div>
 	);
 };

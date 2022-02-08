@@ -1,7 +1,7 @@
 .main {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	grid-template-rows: 4fr 1fr;
+	grid-template-rows: 6fr 1fr;
 	height: 100vh;
 }
 
@@ -85,4 +85,14 @@
 
 .questionsForm {
 	min-height: 80vh;
+}
+
+#expertSection {
+	display: flex;
+	justify-content: flex-end;
+	flex-direction: row;
+	grid-column-start: 1;
+	grid-column-end: 3;
+	background-color: #1e1e1e;
+	padding: 1rem;
 }

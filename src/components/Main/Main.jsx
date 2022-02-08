@@ -17,9 +17,15 @@ function Main(props) {
 		}
 	};
 
+	console.log(props.children);
+
 	return (
 		<div className="main">
-			<Code taskId={taskId} codeSnippets={props.codeSnippets} />
+			<Code
+				taskId={taskId}
+				codeSnippets={props.codeSnippets}
+				pretest={props.pretest}
+			/>
 			{props.children instanceof Array
 				? props.children.map((child, i) => {
 						if (child.type.name === 'HelpVideo') {

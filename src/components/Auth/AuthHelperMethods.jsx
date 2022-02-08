@@ -21,4 +21,11 @@ const fetch = (method, url, data = {}) => {
 	});
 };
 
-export { isAuthenticated, fetch };
+const logout = () => {
+	return new Promise((resolve, reject) => {
+		window.sessionStorage.clear();
+		resolve();
+	});
+};
+
+export { isAuthenticated, fetch, logout };

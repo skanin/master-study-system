@@ -1,7 +1,14 @@
 #videoBg {
-	opacity: 0;
+	/* opacity: 0;
 	pointer-events: none;
+	background: RGBA(30, 30, 30, 0); */
+	/* background: #1e1e1e;*/
+	display: none;
 }
+
+/* #videoBg > * {
+	display: none;
+} */
 
 #blurOverlay {
 	height: 100%;

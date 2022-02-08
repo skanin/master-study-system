@@ -16,70 +16,111 @@ import { PrivateRoute } from './components/PrivateRoute/PrivateRoute';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import HelpVideo from './components/Study/HelpVideo';
 import StudyQuestion from './components/Study/StudyQuestion';
+import Summary from './components/Summary/Summary';
 
-const routes = [
-	{
-		path: '/master-study-system/login',
-		element: <Login />,
-	},
-	{
-		path: '/master-study-system/Info',
-		element: (
-			<PrivateRoute>
-				<InformationPage />
-			</PrivateRoute>
-		),
-	},
-	{
-		path: '/master-study-system/pretest/:taskId',
-		element: (
-			<PrivateRoute>
-				<Main codeSnippets={pretestCodesnippets}>
-					<PretestQuestions className="right pretestRight" />
-				</Main>
-			</PrivateRoute>
-		),
-	},
-	{
-		path: '/master-study-system/task/:taskId',
-		element: (
-			<PrivateRoute>
-				<Main codeSnippets={pretestCodesnippets}>
-					<HelpVideo className="right studyRight" />
-					<StudyQuestion
-						questions={studyQuestions}
-						className="bottom"
-					/>
-				</Main>
-			</PrivateRoute>
-		),
-	},
-	{
-		path: '/master-study-system/plotting',
-		element: <Plotting />,
-	},
-	{
-		path: '/master-study-system',
-		element: (
-			<PrivateRoute>
-				<Home />
-			</PrivateRoute>
-		),
-	},
-];
+import { useSubject } from './hooks';
+import MyStopwatch from './components/MyStopwatch/MyStopwatch';
 
 function CustomRouter() {
+	const [subject] = useSubject();
+	const routes = [
+		{
+			path: '/master-study-system/login',
+			element: <Login />,
+		},
+		{
+			path: '/master-study-system/Info',
+			element: (
+				<PrivateRoute>
+					<InformationPage />
+				</PrivateRoute>
+			),
+		},
+		{
+			path: '/master-study-system/pretest/:taskId',
+			element: (
+				<PrivateRoute>
+					<Main codeSnippets={pretestCodesnippets} pretest={true}>
+						<PretestQuestions className="right pretestRight" />
+					</Main>
+				</PrivateRoute>
+			),
+		},
+		{
+			path: '/master-study-system/task/:taskId',
+			element: (
+				<PrivateRoute>
+					<Main codeSnippets={pretestCodesnippets} pretest={false}>
+						<HelpVideo
+							className="right studyRight"
+							id="helpSection"
+						/>
+						<StudyQuestion
+							questions={studyQuestions}
+							className="bottom"
+							show={subject.helpType !== 4}
+						/>
+					</Main>
+				</PrivateRoute>
+			),
+		},
+		{
+			path: '/master-study-system/plotting',
+			element: <Plotting />,
+		},
+		{
+			path: '/master-study-system/summary',
+			element: (
+				<PrivateRoute>
+					<Summary questions={studyQuestions} />
+				</PrivateRoute>
+			),
+		},
+		{
+			path: '/master-study-system/thanks',
+			element: (
+				<div style={{ padding: '2rem' }}>
+					<h1>Thank you!</h1>
+					<div>
+						<p>
+							You are now done. Please leave this page open when
+							you leave the computer.
+						</p>
+					</div>
+				</div>
+			),
+		},
+		{
+			path: '/master-study-system/',
+			element: (
+				<PrivateRoute>
+					<Home />
+				</PrivateRoute>
+			),
+		},
+		{
+			path: '/master-study-system',
+			element: (
+				<PrivateRoute>
+					<Home />
+				</PrivateRoute>
+			),
+		},
+	];
+
 	const theLocation = useLocation();
 
-	const pathArr = theLocation.pathname.split('/');
-
-	const currentLocation =
-		pathArr.length === 2 ? pathArr[1] : pathArr.slice(2).join(' ');
+	let pathArr = theLocation.pathname.split('/');
 
 	useEffect(() => {
+		if (pathArr[pathArr.length - 1] == '-') {
+			pathArr = pathArr.slice(0, pathArr.length - 1);
+		}
+		const currentLocation =
+			pathArr.length === 2 ? pathArr[1] : pathArr.slice(2).join(' ');
 		document.title = `
         ${currentLocation[0].toUpperCase()}${currentLocation.slice(1)}`;
-	}, [currentLocation]);
+	}, [pathArr]);
 
 	return (
 		<Routes>

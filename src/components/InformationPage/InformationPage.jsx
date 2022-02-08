@@ -45,13 +45,16 @@ const InformationPage = () => {
 					comprehension task.
 				</p>
 				<br />
+				<p>Assume all necessary libraries are already imported.</p>
+				<br />
 				<p>
 					There are no time limit. Answer each question the best you
 					can.
 				</p>
-				<h2>Help during the tasks</h2>
-				{generateHelpText()}
+				{subject.helpType !== 4 && <h2>Help during the tasks</h2>}
+				{subject.helpType !== 4 && generateHelpText()}
 			</div>
+
 			<button className="startButton" onClick={() => startStudy()}>
 				Start study
 			</button>
