@@ -51,6 +51,10 @@ function Code(props) {
 		if (lineNo < 40) {
 			codeSection.style.fontSize = '1.2rem';
 		}
+
+		if (props.pretest) {
+			codeSection.style.fontSize = '1.4rem';
+		}
 	}, [subject]);
 
 	return (

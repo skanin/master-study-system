@@ -2,43 +2,8 @@
 	"1": {
 		"questions": [
 			{
-				"question": "1Question 1: Nulla sodales orci ac semper volutpat.",
-				"answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
-				"correct": 2
-			},
-			{
-				"question": "1Question 2: Nam sit amet eros mattis ligula vestibulum aliquam sed sed lorem. ",
-				"answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
-				"correct": 1
-			},
-			{
-				"question": "1Question 3: Sed id mauris laoreet, consequat est vel, aliquam augue. ",
-				"answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
-				"correct": 4
-			},
-			{
-				"question": "1Question 4: Fusce eget sodales diam.",
-				"answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
-				"correct": 2
-			},
-			{
-				"question": "1Question 5: Fusce eget sodales diam.",
-				"answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
-				"correct": 2
-			},
-			{
-				"question": "1Question 6: Fusce eget sodales diam.",
-				"answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
-				"correct": 2
-			},
-			{
-				"question": "1Question 7: Fusce eget sodales diam.",
-				"answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
-				"correct": 2
-			},
-			{
-				"question": "1Question 8: Fusce eget sodales diam.",
-				"answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
+				"question": "Which of the following would the Java coding snippet return as its output?",
+				"answers": ["0", "10", "1", "Compile time error"],
 				"correct": 2
 			}
 		]
@@ -46,44 +11,81 @@
 	"2": {
 		"questions": [
 			{
-				"question": "2Question 1: Nulla sodales orci ac semper volutpat.",
-				"answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
+				"question": "Which of the following combinations would the Java coding snippet print?",
+				"answers": ["0 1", "1 0 ", "0 0", "null"],
 				"correct": 2
-			},
+			}
+		]
+	},
+	"3": {
+		"questions": [
 			{
-				"question": "2Question 2: Nam sit amet eros mattis ligula vestibulum aliquam sed sed lorem. ",
-				"answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
+				"question": "What would be the outcome of this Java coding snippet?",
+				"answers": ["Welcome", "Welcome Welcome", "Type mismatch error", "Run infinite-times"],
+				"correct": 2
+			}
+		]
+	},
+	"4": {
+		"questions": [
+			{
+				"question": "What would this Java coding snippet print?",
+				"answers": ["Welcome", "None", "Type mismatch error", "Run infinite-times"],
+				"correct": 0
+			}
+		]
+	},
+	"5": {
+		"questions": [
+			{
+				"question": "Which of the following values would this Java coding snippet print in results?",
+				"answers": ["0", "1", "2", "Compilation error"],
 				"correct": 1
-			},
+			}
+		]
+	},
+	"6": {
+		"questions": [
 			{
-				"question": "2Question 3: Sed id mauris laoreet, consequat est vel, aliquam augue. ",
-				"answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
-				"correct": 4
-			},
+				"question": "What does this Java coding snippet print on execution?",
+				"answers": ["Compilation fails.", "3", "2", "99"],
+				"correct": 3
+			}
+		]
+	},
+	"7": {
+		"questions": [
 			{
-				"question": "2Question 4: Fusce eget sodales diam.",
-				"answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
+				"question": "Which of the following values would this Java coding snippet yield?",
+				"answers": ["199", "199.5", "200", "Invalid number"],
 				"correct": 2
-			},
+			}
+		]
+	},
+	"8": {
+		"questions": [
 			{
-				"question": "2Question 5: Fusce eget sodales diam.",
-				"answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
-				"correct": 2
-			},
+				"question": "What would this Java coding snippet return as its output?",
+				"answers": ["An exception occurs while instantiating the A class.", "It'll print “This is a class A instance”", "The program will print null", "Compilation error at line number 13"],
+				"correct": 1
+			}
+		]
+	},
+	"9": {
+		"questions": [
 			{
-				"question": "2Question 6: Fusce eget sodales diam.",
-				"answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
+				"question": "What would the this method yield when called?",
+				"answers": ["If a and b both are true, then the output is “A && B”", "If a is true and b is false, then the output is “!B”", "If a is false and b is true, then the output is “None”", "If a and b both are false, then the output is “None”"],
 				"correct": 2
-			},
+			}
+		]
+	},
+	"10": {
+		"questions": [
 			{
-				"question": "2Question 7: Fusce eget sodales diam.",
-				"answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
-				"correct": 2
-			},
-			{
-				"question": "2Question 8: Fusce eget sodales diam.",
-				"answers": ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
-				"correct": 2
+				"question": "What will be the output of this Java coding snippet?",
+				"answers": ["abc", "abcd", "abcde", "abcdef"],
+				"correct": 0
 			}
 		]
 	}

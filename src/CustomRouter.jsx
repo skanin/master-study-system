@@ -9,6 +9,7 @@ import Plotting from './components/Plotting/Plotting';
 import PretestQuestions from './components/Pretest/PretestQuestions';
 
 import pretestCodesnippets from './data/code_snippets_pretest.json';
+import studyCodesnippets from './data/code_snippets_study.json';
 import studyQuestions from './data/questions_study.json';
 
 import { PrivateRoute } from './components/PrivateRoute/PrivateRoute';
@@ -19,7 +20,6 @@ import StudyQuestion from './components/Study/StudyQuestion';
 import Summary from './components/Summary/Summary';
 
 import { useSubject } from './hooks';
-import MyStopwatch from './components/MyStopwatch/MyStopwatch';
 
 function CustomRouter() {
 	const [subject] = useSubject();
@@ -50,7 +50,7 @@ function CustomRouter() {
 			path: '/master-study-system/task/:taskId',
 			element: (
 				<PrivateRoute>
-					<Main codeSnippets={pretestCodesnippets} pretest={false}>
+					<Main codeSnippets={studyCodesnippets} pretest={false}>
 						<HelpVideo
 							className="right studyRight"
 							id="helpSection"

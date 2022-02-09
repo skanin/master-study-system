@@ -42,7 +42,7 @@ function PretestQuestions(props) {
 
 		setShowNextButton(questionsTemp.length > tmpButtonClicked * 3 + 3);
 		setShowPrevButton(
-			tmpButtonClicked * 3 >= Math.floor(questionsTemp.length / 3)
+			tmpButtonClicked * 3 >= Math.floor(questionsTemp.length / 3) && Math.floor(questionsTemp.length / 3) !== 0
 		);
 		setButtonClicked(tmpButtonClicked);
 		setCurrQuestions([

@@ -41,7 +41,7 @@ const Login = () => {
 					setInvalid(false);
 					setSubjectAsyc({
 						...subject,
-						username: username,
+						username: res.data.username,
 						helpType: res.data.helpType,
 						subject: res.data.subject,
 					}).then(() => {
