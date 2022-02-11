@@ -49,7 +49,6 @@ function Code(props) {
 		}
 
 		if (props.help) {
-			alert('help');
 			const elem = document.getElementById('codeSectionHelp');
 			elem.style.minHeight = '100%';
 			elem.style.fontSize = '1.2rem';
