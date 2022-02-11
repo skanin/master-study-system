@@ -48,6 +48,13 @@ function Code(props) {
 			codeSection.style.overflow = 'visible';
 		}
 
+		if (props.help) {
+			alert('help');
+			const elem = document.getElementById('codeSectionHelp');
+			elem.style.minHeight = '100%';
+			elem.style.fontSize = '1.2rem';
+		}
+
 		if (lineNo < 40) {
 			codeSection.style.fontSize = '1.2rem';
 		}
@@ -60,9 +67,12 @@ function Code(props) {
 	return (
 		<Highlight {...defaultProps} theme={theme} code={code} language="java">
 			{({ className, style, tokens, getLineProps, getTokenProps }) => (
-				<Pre className={className} style={style} id="codeSection">
+				<Pre className={className} style={style} id={props.preId}>
 					{tokens.map((line, i) => (
-						<Line key={i} {...getLineProps({ line, key: i })}>
+						<Line
+							key={i}
+							{...getLineProps({ line, key: i })}
+							fontSize={subject.helpType == 4 ? '82%' : '70%'}>
 							<LineNo>{i + 1}</LineNo>
 							<LineContent>
 								{line.map((token, key) => (

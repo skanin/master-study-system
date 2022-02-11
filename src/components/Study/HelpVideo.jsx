@@ -10,7 +10,12 @@ const HelpVideo = (props) => {
 
 	return (
 		<div className={props.className} id="videoBg">
-			<Plotting taskId={props.taskId} fromStudy={true} />
+			<Plotting
+				codeSnippets={props.codeSnippets}
+				pretest={false}
+				taskId={props.taskId}
+				fromStudy={true}
+			/>
 		</div>
 	);
 };

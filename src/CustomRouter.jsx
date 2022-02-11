@@ -52,6 +52,7 @@ function CustomRouter() {
 				<PrivateRoute>
 					<Main codeSnippets={studyCodesnippets} pretest={false}>
 						<HelpVideo
+							codeSnippets={studyCodesnippets}
 							className="right studyRight"
 							id="helpSection"
 						/>
@@ -88,6 +89,18 @@ function CustomRouter() {
 						</p>
 					</div>
 				</div>
+			),
+		},
+		{
+			path: '/master-study-system/plotting',
+			element: (
+				<Plotting
+					codeSnippets={studyCodesnippets}
+					pretest={false}
+					taskId={3}
+					fromStudy={false}
+					test="Hallo"
+				/>
 			),
 		},
 		{

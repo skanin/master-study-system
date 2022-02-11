@@ -7,10 +7,12 @@ import { useMountEffect } from '../../hooks';
 import './Plotting.css';
 import './VideoPlayer.css';
 
+import Code from '../Code/Code';
+
 import { BiPauseCircle, BiPlayCircle } from 'react-icons/bi';
 import { useStopwatch } from 'react-timer-hook';
 
-const Plotting = ({ taskId, fromStudy }) => {
+const Plotting = ({ taskId, fromStudy, codeSnippets, pretest, test }) => {
 	const [startTime, setStartTime] = useState();
 	const [pauseTime, setPauseTime] = useState();
 	const [pauseTimeDur, setPauseTimeDur] = useState(0);
@@ -98,8 +100,8 @@ const Plotting = ({ taskId, fromStudy }) => {
 		};
 
 		data.forEach((element) => {
-			formattedData.x.push(parseInt(element.x));
-			formattedData.y.push(parseInt(element.y));
+			formattedData.x.push(parseFloat(element.x) * 1.5);
+			formattedData.y.push(parseFloat(element.y) * 0.85);
 			formattedData.marker.size.push(
 				fromStudy
 					? parseInt(element.count)
@@ -126,7 +128,7 @@ const Plotting = ({ taskId, fromStudy }) => {
 		d.setSeconds(d.getSeconds() + offset);
 		const time = isRunning
 			? d - startTime - (pauseTimeDur || 0) + offset * 1000
-			: seconds * 1000;
+			: getFullSeconds() * 1000;
 		setScatter(
 			formatData(
 				dataRef.current.filter(
@@ -142,12 +144,13 @@ const Plotting = ({ taskId, fromStudy }) => {
 	useEffect(() => {
 		const interval = setInterval(() => {
 			if (isRunning) updateData();
-			if (seconds >= maxS) pause();
+			if (getFullSeconds() >= maxS) pause();
 		}, 1e-3);
 		return () => clearInterval(interval);
 	}, [updateData, pauseTime, pauseTimeDur]);
 
 	useMountEffect(() => {
+		alert(test);
 		fetch('get', '/data/' + (taskId || '1'))
 			.then((res) => {
 				setData(res.data);
@@ -160,10 +163,11 @@ const Plotting = ({ taskId, fromStudy }) => {
 				);
 
 				const minY = Math.min(...res.data.map((d) => d.y));
+				const minX = Math.min(...res.data.map((d) => d.x));
 
 				setLayout({
 					...layout,
-					xaxis: { ...layout.xaxis, range: [0, 1920] },
+					xaxis: { ...layout.xaxis, range: [minX, 1920] },
 					yaxis: { ...layout.yaxis, range: [1080, minY] },
 				});
 			})
@@ -287,6 +291,10 @@ const Plotting = ({ taskId, fromStudy }) => {
 		reset(d);
 	};
 
+	const getFullSeconds = () => {
+		return hours * 3600 + minutes * 60 + seconds;
+	};
+
 	return (
 		loaded && (
 			<div id="bg">
@@ -297,6 +305,13 @@ const Plotting = ({ taskId, fromStudy }) => {
 					alt="Code background"
 					id="backgroundImg"
 				/>
+				{/* <Code
+					pretest={pretest}
+					codeSnippets={codeSnippets}
+					taskId={taskId}
+					help={true}
+					preId="codeSectionHelp"
+				/> */}
 				<div id="scanpathOverlay">
 					<Plot
 						data={scatter}
@@ -335,7 +350,7 @@ const Plotting = ({ taskId, fromStudy }) => {
 						step={0.1}
 						min={0}
 						max={maxS}
-						value={seconds}
+						value={getFullSeconds()}
 						onChange={onPlayTimeChange}
 					/>
 
@@ -354,7 +369,7 @@ const Plotting = ({ taskId, fromStudy }) => {
 						className="disappearRate"
 						type="range"
 						min={1}
-						max={60}
+						max={maxS}
 						step={1}
 						style={{ width: '5rem' }}
 						value={disappearActual}

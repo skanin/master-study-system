@@ -25,6 +25,7 @@ function Main(props) {
 				taskId={taskId}
 				codeSnippets={props.codeSnippets}
 				pretest={props.pretest}
+				preId="codeSection"
 			/>
 			{props.children instanceof Array
 				? props.children.map((child, i) => {
@@ -32,6 +33,8 @@ function Main(props) {
 							return addPropsToChild(child, {
 								key: i,
 								taskId: taskId,
+								codeSnippets: props.codeSnippets,
+								pretest: props.pretest,
 								...child.props,
 							});
 						}

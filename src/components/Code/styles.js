@@ -23,7 +23,7 @@ export const Pre = styled.pre`
 
 export const Line = styled.div`
 	display: table-row;
-	font-size: 70%;
+	font-size: ${(props) => props.fontSize || '70%'};
 `;
 
 export const LineNo = styled.span`
