@@ -6,17 +6,20 @@
 	position: absolute;
 	bottom: 0;
 	width: 100%;
-	transition: opacity 0.2s ease-in-out;
-	/* opacity: 0.5; */
-	background: rgba(255, 255, 255, 0.5);
+	transition: all 0.2s ease-in-out;
+
+	opacity: 0;
+	background: rgba(255, 255, 255, 0);
 	font-size: small;
 }
 
 #scanpathOverlay:hover ~ #videoControls {
+	background: rgba(255, 255, 255, 0.5);
 	opacity: 1;
 }
 
 #videoControls:hover {
+	background: rgba(255, 255, 255, 0.5);
 	opacity: 1;
 }
 
@@ -58,7 +61,7 @@ input[type='range']::-webkit-slider-runnable-track {
 input[type='range']::-webkit-slider-thumb {
 	height: 20px;
 	width: 10px;
-	background: white;
+	background: white !important;
 	cursor: pointer;
 	-webkit-appearance: none;
 	margin-top: -6px;
