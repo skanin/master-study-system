@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Plot from 'react-plotly.js';
 
 import { fetch } from '../Auth/AuthHelperMethods';
-import { useMountEffect } from '../../hooks';
+import { useMountEffect, useLogger } from '../../hooks';
 
 import './Plotting.css';
 import './VideoPlayer.css';
@@ -13,10 +13,13 @@ import { BiPauseCircle, BiPlayCircle } from 'react-icons/bi';
 import { useStopwatch } from 'react-timer-hook';
 
 const Plotting = ({ taskId, fromStudy, codeSnippets, pretest, test }) => {
+	const [setLogs] = useLogger();
 	const [startTime, setStartTime] = useState();
 	const [pauseTime, setPauseTime] = useState();
 	const [pauseTimeDur, setPauseTimeDur] = useState(0);
 	const [offset, setOffset] = useState(0);
+	const [disappearLast, setDisappearLast] = useState(0);
+	const [playTimeLast, setPlayTimeLast] = useState(0);
 
 	const { seconds, minutes, hours, days, isRunning, start, pause, reset } =
 		useStopwatch({ autoStart: false });
@@ -57,34 +60,9 @@ const Plotting = ({ taskId, fromStudy, codeSnippets, pretest, test }) => {
 
 	const [playing, setPlaying] = useState(false);
 
-	const [disappearActual, setDisappearActual] = useState(2);
+	const [disappearActual, setDisappearActual] = useState(5);
 	const disappearRef = useRef(disappearActual);
 	disappearRef.current = disappearActual;
-
-	const [currTime, setCurrTime] = useState(0);
-	const currTimeRef = useRef(currTime);
-	currTimeRef.current = currTime;
-
-	const [ms, setMs] = useState(0);
-	const msRef = useRef(ms);
-	msRef.current = ms;
-
-	const [donePlaying, setDonePlaying] = useState(false);
-	const donePlayingRef = useRef(donePlaying);
-	donePlayingRef.current = donePlaying;
-
-	const [msTimer, setMsTimer] = useState(
-		new Timer(() => {
-			setMs((ms) => ms + 10);
-			updateData();
-		}, 0.5e-3)
-	);
-
-	const [sTimer, setSTimer] = useState(
-		new Timer(() => {
-			setCurrTime((currTime) => currTime + 1);
-		}, 1000)
-	);
 
 	const [maxS, setMaxS] = useState(0);
 	const maxSRef = useRef(maxS);
@@ -100,8 +78,8 @@ const Plotting = ({ taskId, fromStudy, codeSnippets, pretest, test }) => {
 		};
 
 		data.forEach((element) => {
-			formattedData.x.push(parseFloat(element.x) * 1.5);
-			formattedData.y.push(parseFloat(element.y) * 0.85);
+			formattedData.x.push(parseFloat(element.x));
+			formattedData.y.push(parseFloat(element.y));
 			formattedData.marker.size.push(
 				fromStudy
 					? parseInt(element.count)
@@ -112,17 +90,6 @@ const Plotting = ({ taskId, fromStudy, codeSnippets, pretest, test }) => {
 	};
 
 	const updateData = () => {
-		// setScatter(
-		// 	formatData(
-		// 		dataRef.current.filter(
-		// 			(d) =>
-		// 				parseFloat(d.end_ms) <= msRef.current &&
-		// 				msRef.current <=
-		// 					parseFloat(d.end_ms) + disappearRef.current * 1000
-		// 		)
-		// 	)
-		// );
-
 		let d = new Date();
 
 		d.setSeconds(d.getSeconds() + offset);
@@ -150,7 +117,6 @@ const Plotting = ({ taskId, fromStudy, codeSnippets, pretest, test }) => {
 	}, [updateData, pauseTime, pauseTimeDur]);
 
 	useMountEffect(() => {
-		alert(test);
 		fetch('get', '/data/' + (taskId || '1'))
 			.then((res) => {
 				setData(res.data);
@@ -164,6 +130,7 @@ const Plotting = ({ taskId, fromStudy, codeSnippets, pretest, test }) => {
 
 				const minY = Math.min(...res.data.map((d) => d.y));
 				const minX = Math.min(...res.data.map((d) => d.x));
+				const maxY = Math.max(...res.data.map((d) => d.y));
 
 				setLayout({
 					...layout,
@@ -176,77 +143,29 @@ const Plotting = ({ taskId, fromStudy, codeSnippets, pretest, test }) => {
 			});
 	});
 
-	function Timer(callback, delay) {
-		var timerId,
-			start,
-			remaining = delay;
-
-		var pause = function () {
-			clearTimeout(timerId);
-			remaining -= new Date() - start;
-		};
-
-		var resume = function () {
-			start = new Date();
-			timerId = setTimeout(function () {
-				remaining = delay;
-				resume();
-				callback();
-			}, remaining);
-			if (currTimeRef.current >= maxSRef.current - 1) {
-				pause();
-				setPlaying(false);
-			}
-		};
-
-		this.resume = resume;
-		this.pause = pause;
-
-		this.pause();
-	}
-
-	const pauseTimers = () => {
-		msTimer.pause();
-		sTimer.pause();
-		setPlaying(false);
-	};
-
-	const resumeTimers = (start = 0) => {
-		// sTimer.resume();
-		// msTimer.resume();
-		// setPlaying(true);
-		start();
-	};
-
 	const onPlay = () => {
 		if (!hasStarted) {
 			setHasStarted(true);
-			// setPauseTime(new Date());
 			setStartTime(new Date());
 		}
 
 		if (playing) {
-			// pauseTimers();
 			setPauseTime(new Date());
 			pause();
 			setPlaying(false);
 		} else {
-			// console.log('New date - pauseTime: ', new Date() - pauseTime);
-			// console.log('PauseTimeDur: ', pauseTimeDur);
-			// let tmp = new Date() - pauseTime;
-			// let tmp2 = pauseTimeDur;
-
-			// console.log('tmp+tmp2: ', tmp + tmp2);
-
 			setPauseTimeDur(
 				(pauseTimeDur) => (new Date() - pauseTime || 0) + pauseTimeDur
 			);
-			// setPauseTimeDur(new Date() - pauseTime);
 			updateData();
-			// resumeTimers();
 			start();
 			setPlaying(true);
 		}
+
+		setLogs(!playing ? 'play' : 'pause', {
+			videoTime: getFullSeconds(),
+			taskId: taskId,
+		});
 	};
 
 	const onDisappearValueChange = (e) => {
@@ -274,13 +193,7 @@ const Plotting = ({ taskId, fromStudy, codeSnippets, pretest, test }) => {
 	}
 
 	const onPlayTimeChange = (e) => {
-		// setCurrTime(parseInt(e.target.value));
-		// setMs(parseInt(e.target.value) * 1000);
-		// updateData();
-		// if (!playing) {
-		// 	pauseTimers();
-		// 	resumeTimers();
-		// }
+		if (!startTime) return;
 		setOffset(parseFloat(e.target.value));
 		let d = new Date();
 		d.setSeconds(d.getSeconds() + parseInt(e.target.value));
@@ -289,6 +202,30 @@ const Plotting = ({ taskId, fromStudy, codeSnippets, pretest, test }) => {
 		setStartTime(d);
 		setPlaying(true);
 		reset(d);
+	};
+
+	const onDissapearMouseDown = (e) => {
+		setDisappearLast(disappearActual);
+	};
+
+	const onDissapearMouseUp = (e) => {
+		setLogs('disappearValueChange', {
+			from: disappearLast,
+			to: parseFloat(e.target.value),
+			taskId: taskId,
+		});
+	};
+
+	const onPlayTimeMouseDown = (e) => {
+		setPlayTimeLast(getFullSeconds());
+	};
+
+	const onPlayTimeMouseUp = (e) => {
+		setLogs('playTimeValueChange', {
+			from: playTimeLast,
+			to: parseFloat(e.target.value),
+			taskId: taskId,
+		});
 	};
 
 	const getFullSeconds = () => {
@@ -335,8 +272,7 @@ const Plotting = ({ taskId, fromStudy, codeSnippets, pretest, test }) => {
 					</span>
 					<span className="time">
 						<span className="video_time">
-							{/*getHHMMSSFromSeconds(currTime)*/}
-							{hours + ':' + minutes + ':' + seconds}
+							{getHHMMSSFromSeconds(getFullSeconds())}
 						</span>
 						<span>/</span>
 						<span className="video_length">
@@ -352,6 +288,8 @@ const Plotting = ({ taskId, fromStudy, codeSnippets, pretest, test }) => {
 						max={maxS}
 						value={getFullSeconds()}
 						onChange={onPlayTimeChange}
+						onMouseDown={onPlayTimeMouseDown}
+						onMouseUp={onPlayTimeMouseUp}
 					/>
 
 					<span className="disappear">
@@ -366,6 +304,8 @@ const Plotting = ({ taskId, fromStudy, codeSnippets, pretest, test }) => {
 
 					<input
 						onChange={onDisappearValueChange}
+						onMouseDown={onDissapearMouseDown}
+						onMouseUp={onDissapearMouseUp}
 						className="disappearRate"
 						type="range"
 						min={1}

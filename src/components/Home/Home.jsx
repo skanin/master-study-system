@@ -1,17 +1,20 @@
 import { React, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isAuthenticated } from '../Auth/AuthHelperMethods';
+import { useLogger } from '../../hooks';
 
 import './Home.css';
 
 function Home() {
 	const navigate = useNavigate();
+	const [setLogs] = useLogger();
 
 	useEffect(() => {
 		isAuthenticated();
 	});
 
 	const startPretest = () => {
+		setLogs('startPretest');
 		navigate('/master-study-system/pretest/1');
 	};
 

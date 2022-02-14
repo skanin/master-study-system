@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { useStudyAnswers } from '../../hooks';
+import { useStudyAnswers, useLogger } from '../../hooks';
 
 import { fetch, logout } from '../Auth/AuthHelperMethods';
 
@@ -12,6 +12,7 @@ import './Summary.css';
 const Summary = (props) => {
 	const [getStudyAnswers, setStudyAnswers] = useStudyAnswers();
 	const [maxTaskId, setMaxTaskId] = useState(0);
+	const [setLogs, getLogs] = useLogger();
 
 	useEffect(() => {
 		setMaxTaskId(Math.max(...Object.keys(props.questions)));
@@ -21,17 +22,17 @@ const Summary = (props) => {
 
 	const onAnswerChange = (e) => {
 		const taskId = e.target.id.match(/\d+/)[0];
-		console.log(e.target.value);
 		setStudyAnswers(taskId, e.target.value);
 	};
 
 	const onBackButtonClick = (e) => {
 		const taskId = e.target.id.match(/\d+/)[0];
-
+		setLogs('backToStudyTask', { to: parseInt(taskId) });
 		window.location.href = `/master-study-system/task/${taskId}`;
 	};
 
 	const onFinishClick = async (e) => {
+		setLogs('onFinishSummaryClick');
 		const result = await confirm(
 			'Are you sure you want to finish the study and sumbit your answers?'
 		);
@@ -46,18 +47,40 @@ const Summary = (props) => {
 				}),
 			};
 
-			await fetch('POST', '/study', data)
-				.then(async (res) => {
-					if (res.status === 200) {
-						await logout().then(() => {
-							window.location.href =
-								'/master-study-system/thanks';
-						});
-					}
-				})
-				.catch((err) => {
-					console.log(err);
-				});
+			const postDataResp = await fetch('POST', '/study', data).catch(
+				(err) => console.log(err)
+			);
+
+			setLogs('finishSummary');
+			setLogs('logout');
+
+			const postLogsResp = await fetch('POST', '/logs', {
+				logs: getLogs(),
+			}).catch((err) => console.log(err));
+
+			if (postDataResp.status === 200 && postLogsResp.status === 200) {
+				// await logout().then(() => {
+				// 	window.location.href = '/master-study-system/login';
+				// });
+				alert('Done');
+			} else {
+				alert('Something went wrong. Please try again.');
+			}
+
+			// await fetch('POST', '/study', data)
+			// 	.then(async (res) => {
+			// 		if (res.status === 200) {
+			// 			await logout().then(() => {
+			// 				setLogs('finishSummary');
+			// 				setLogs('logout');
+			// 				window.location.href =
+			// 					'/master-study-system/thanks';
+			// 			});
+			// 		}
+			// 	})
+			// 	.catch((err) => {
+			// 		console.log(err);
+			// 	});
 		}
 		return;
 	};

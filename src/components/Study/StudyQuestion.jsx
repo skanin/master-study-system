@@ -1,6 +1,11 @@
 import { React, useState } from 'react';
 
-import { useStudyAnswers, useSubject, useMountEffect } from '../../hooks';
+import {
+	useStudyAnswers,
+	useSubject,
+	useMountEffect,
+	useLogger,
+} from '../../hooks';
 
 import { Input, FormGroup, Form, Label } from 'reactstrap';
 
@@ -9,6 +14,7 @@ import { fetch } from '../Auth/AuthHelperMethods';
 const StudyQuestion = (props) => {
 	const [subject] = useSubject();
 	const [answer, setAnswer] = useState('');
+	const [setLogs] = useLogger();
 	const [question, setQuestion] = useState({});
 	const [getStudyAnswers, setStudyAnswers] = useStudyAnswers();
 	const [maxTaskId, setMaxTaskId] = useState(-1);
@@ -64,6 +70,7 @@ const StudyQuestion = (props) => {
 			await fetch('POST', '/study', data)
 				.then((res) => {
 					if (res.status === 200) {
+						setLogs('studyFinished');
 						window.location.href = '/master-study-system/summary';
 					}
 				})
@@ -71,6 +78,10 @@ const StudyQuestion = (props) => {
 					console.log(err);
 				});
 		} else {
+			setLogs('changeStudy', {
+				from: parseInt(props.taskId),
+				to: parseInt(props.taskId) + 1,
+			});
 			window.location.href = `/master-study-system/task/${
 				parseInt(props.taskId) + 1
 			}`;
@@ -78,6 +89,9 @@ const StudyQuestion = (props) => {
 	};
 
 	const onHelpChange = () => {
+		setLogs(helpVisible ? 'showHelp' : 'hideHelp', {
+			taskId: props.taskId,
+		});
 		const codeSection = document.getElementById('codeSection');
 		const helpSection = document.getElementById('videoBg');
 
@@ -90,8 +104,10 @@ const StudyQuestion = (props) => {
 	const expertOnNext = (e) => {
 		e.preventDefault();
 		if (parseInt(props.taskId) === maxTaskId) {
+			setLogs('expertProceed');
 			window.location.href = '/master-study-system/thanks';
 		} else {
+			setLogs('expertFinished');
 			window.location.href = `/master-study-system/task/${
 				parseInt(props.taskId) + 1
 			}`;

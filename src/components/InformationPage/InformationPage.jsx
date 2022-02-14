@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { useSubject } from '../../hooks/useSubject';
+import { useSubject, useLogger } from '../../hooks';
 
 const InformationPage = () => {
 	const [subject] = useSubject();
-
-	console.log(subject);
+	const [setLogs] = useLogger();
 
 	const startStudy = () => {
+		setLogs('startStudy');
 		window.location.href = '/master-study-system/task/1';
 	};
 

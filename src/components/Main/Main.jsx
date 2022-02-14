@@ -17,8 +17,6 @@ function Main(props) {
 		}
 	};
 
-	console.log(props.children);
-
 	return (
 		<div className="main">
 			<Code

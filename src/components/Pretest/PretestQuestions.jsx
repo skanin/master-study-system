@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { usePretestAnswers, useMountEffect } from '../../hooks';
+import { usePretestAnswers, useMountEffect, useLogger } from '../../hooks';
 import { useParams } from 'react-router-dom';
 import { fetch } from '../Auth/AuthHelperMethods';
 import { Form } from 'reactstrap';
@@ -9,6 +9,7 @@ import Question from './Question';
 
 function PretestQuestions(props) {
 	const { taskId } = useParams();
+	const [setLogs] = useLogger();
 	const [getPretestAnswers, setPretestAnswers] = usePretestAnswers();
 	const [origQuestions, setOrigQuestions] = React.useState(
 		getPretestAnswers(taskId) || {
@@ -42,7 +43,8 @@ function PretestQuestions(props) {
 
 		setShowNextButton(questionsTemp.length > tmpButtonClicked * 3 + 3);
 		setShowPrevButton(
-			tmpButtonClicked * 3 >= Math.floor(questionsTemp.length / 3) && Math.floor(questionsTemp.length / 3) !== 0
+			tmpButtonClicked * 3 >= Math.floor(questionsTemp.length / 3) &&
+				Math.floor(questionsTemp.length / 3) !== 0
 		);
 		setButtonClicked(tmpButtonClicked);
 		setCurrQuestions([
@@ -54,6 +56,14 @@ function PretestQuestions(props) {
 	};
 
 	const onQuestionChange = (e) => {
+		setLogs('pretestAnswerChange', {
+			pretestId: parseInt(taskId),
+			pretestQuestion: [e.target.name][0].slice(
+				[e.target.name][0].indexOf('radio') + 5
+			),
+			pretestAnswer: e.target.id,
+		});
+
 		origQuestions.questions.forEach((element) => {
 			if (
 				element.questionId ===
@@ -72,6 +82,10 @@ function PretestQuestions(props) {
 		setPretestAnswers(taskId, origQuestions);
 
 		if (parseInt(taskId) < maxPretestId) {
+			setLogs('changePretest', {
+				from: parseInt(taskId),
+				to: parseInt(taskId) + 1,
+			});
 			window.location.href =
 				'/master-study-system/pretest/' + (parseInt(taskId) + 1);
 		} else {
@@ -92,6 +106,7 @@ function PretestQuestions(props) {
 			}
 			await fetch('post', `/pretest`, data)
 				.then((res) => {
+					setLogs('pretestFinished');
 					window.location.href = '/master-study-system/info';
 				})
 				.catch((err) => {

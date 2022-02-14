@@ -1,11 +1,12 @@
 import { React, useEffect, useState } from 'react';
 import { Form, Label, FormGroup, Input } from 'reactstrap';
-import { useSubject, useMountEffect } from '../../hooks';
+import { useSubject, useMountEffect, useLogger } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
 import { isAuthenticated, fetch } from './AuthHelperMethods';
 import './Login.css';
 
 const Login = () => {
+	const [setLogs] = useLogger();
 	const [subject, setSubject] = useSubject();
 	const [username, setUsername] = useState();
 	const [invalid, setInvalid] = useState(false);
@@ -38,6 +39,7 @@ const Login = () => {
 		fetch('post', '/login', { ...subject, username: username })
 			.then((res) => {
 				if (res.status === 200) {
+					setLogs('login', res.data.subject);
 					setInvalid(false);
 					setSubjectAsyc({
 						...subject,
