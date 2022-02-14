@@ -1,70 +1,219 @@
-# Getting Started with Create React App
+# A master study system for my master thesis
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## How to run
 
-## Available Scripts
+Use `npm start` in the project root. The frontend will then start. You'll also need the [backend](https://github.com/skanin/master-study-system-backend) to be able to use the system.
 
-In the project directory, you can run:
+Once both frontend and backend are running, you can use the app at [http://localhost:3000](http://localhost:3000). The backend will be running at [http://localhost:3001](http://localhost:3001). You'll have to login, a list of usernames can be found in the [backend repository](https://github.com/skanin/master-study-system-backend).
 
-### `npm start`
+## Flow chart of the system
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+![Flow chart](./flowchart_of_system.svg)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## List of logs events and data that are stored
 
-### `npm test`
+### Log events
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### login - Participant logs in
 
-### `npm run build`
+-   `subject : int`, `helpType : int`, `username : string`, `time : int` (ms)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### startPretest - Participant starts the pretest
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+-   `subject : int`, `helpType : int`, `username : string`, `time : int` (ms)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### startStudy - Participants starts the study
 
-### `npm run eject`
+-   `subject : int`, `helpType : int`, `username : string`, `time : int` (ms)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+#### play - Participant plays help video
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+-   `subject : int`, `helpType : int`, `username : string`, `time : int` (ms), `videoTime : int` (s), `taskId : int`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+#### pause - Participant pauses help video
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+-   `subject : int`, `helpType : int`, `username : string`, `time : int` (ms), `videoTime : int` (s), `taskId : int`
 
-## Learn More
+#### disappearValueChange - Participant changes eye gaze disappearance rate
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+-   `subject : int`, `helpType : int`, `username : string`, `time : int` (ms), `from : int` (s), `to : int` (s), `taskId : int`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### playTimeValueChange - Participant changes help video time
 
-### Code Splitting
+-   `subject : int`, `helpType : int`, `username : string`, `time : int` (ms), `from : int`(s), `to : int` (s), `taskId : int`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+#### pretestAnswerChange - Participant changes pretest answer
 
-### Analyzing the Bundle Size
+-   `subject : int`, `helpType : int`, `username : string`, `time : int` (ms), `pretestId : int`, `pretestQuestion : string`, `pretestAnswer : int`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+#### changePretest - Participants changes pretest task
 
-### Making a Progressive Web App
+-   `subject : int`, `helpType : int`, `username : string`, `time : int` (ms), `from : int` (taskId), `to : int` (taskId)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+#### pretestFinished - Participant finished pretest
 
-### Advanced Configuration
+-   `subject : int`, `helpType : int`, `username : string`, `time : int` (ms)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+#### studyFinished - Participant finished study
 
-### Deployment
+-   `subject : int`, `helpType : int`, `username : string`, `time : int` (ms)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+#### changeStudy - Patricipant changes study task
 
-### `npm run build` fails to minify
+-   `subject : int`, `helpType : int`, `username : string`, `time : int` (ms), `to : int` (taskId), `from : int` (taskId)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+#### showHelp - Participants shows help video
+
+-   `subject : int`, `helpType : int`, `username : string`, `time : int` (ms), `taskId : int`
+
+#### hideHelp - Participant hides help video
+
+-   `subject : int`, `helpType : int`, `username : string`, `time : int` (ms), `taskId : int`
+
+#### expertProceed - Expert proceeds to next task
+
+-   `subject : int`, `helpType : int`, `username : string`, `time : int` (ms)
+
+#### expertFinished - Expert is finished
+
+-   `subject : int`, `helpType : int`, `username : string`, `time : int` (ms)
+
+#### backToStudyTask - Participant goes back to a study task form Summary page
+
+-   `subject : int`, `helpType : int`, `username : string`, `time : int` (ms), `to : int` (taskId)
+
+#### onFinishSummaryClick - Participant click finish study button
+
+-   `subject : int`, `helpType : int`, `username : string`, `time : int` (ms)
+
+#### finishSummary - Participant finished study
+
+-   `subject : int`, `helpType : int`, `username : string`, `time : int` (ms)
+
+#### logout - Participant logs out
+
+-   `subject : int`, `helpType : int`, `username : string`, `time : int` (ms)
+
+### Data - pretest
+
+#### subjectId
+
+`int`
+
+#### username
+
+`string`
+
+#### pretest.1-1
+
+`int`
+
+#### pretest.1-1_correct
+
+`int`
+
+#### pretest.2-1
+
+`int`
+
+#### pretest.2-1_correct
+
+`int`
+
+#### pretest.3-1
+
+`int`
+
+#### pretest.3-1_correct
+
+`int`
+
+#### pretest.4-1
+
+`int`
+
+#### pretest.4-1_correct
+
+`int`
+
+#### pretest.5-1
+
+`int`
+
+#### pretest.5-1_correct
+
+`int`
+
+#### pretest.6-1
+
+`int`
+
+#### pretest.6-1_correct
+
+`int`
+
+#### pretest.7-1
+
+`int`
+
+#### pretest.7-1_correct
+
+`int`
+
+#### pretest.8-1
+
+`int`
+
+#### pretest.8-1_correct
+
+`int`
+
+#### pretest.9-1
+
+`int`
+
+#### pretest.9-1_correct
+
+`int`
+
+#### pretest.10-1
+
+`int`
+
+#### pretest.10-1_correct
+
+`int`
+
+### Data - study
+
+#### subjectId
+
+`int`
+
+#### username
+
+`string`
+
+#### studyTask1
+
+`string`
+
+#### studyTask2
+
+`string`
+
+#### studyTask3
+
+`string`
+
+#### studyTask4
+
+`string`
+
+#### studyTask5
+
+`string`
+
+#### studyTask6
+
+`string`
