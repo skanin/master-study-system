@@ -2,7 +2,7 @@
 
 ## How to run
 
-Use `npm start` in the project root. The frontend will then start. You'll also need the [backend](https://github.com/skanin/master-study-system-backend) to be able to use the system.
+Use `npm i && npm start` in the project root. The frontend will then start. You'll also need the [backend](https://github.com/skanin/master-study-system-backend) to be able to use the system.
 
 Once both frontend and backend are running, you can use the app at [http://localhost:3000](http://localhost:3000). The backend will be running at [http://localhost:3001](http://localhost:3001). You'll have to login, a list of usernames can be found in the [backend repository](https://github.com/skanin/master-study-system-backend).
 
