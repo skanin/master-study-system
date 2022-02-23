@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const domain = 'http://localhost:3001'// `http://192.168.0.47:3001`;
+const domain = 'http://localhost:3001'; // `http://192.168.0.51:3001`;
 
 const isAuthenticated = (subject) => {
 	return fetch('post', `/auth/isAuthenticated`, subject);

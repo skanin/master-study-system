@@ -8,7 +8,10 @@ const InformationPage = () => {
 
 	const startStudy = () => {
 		setLogs('startStudy');
-		window.location.href = '/master-study-system/task/1';
+		window.location.href =
+			subject.helpType % 2 == 0
+				? '/master-study-system/task/1'
+				: '/master-study-system/task/2';
 	};
 
 	const generateHelpText = () => {
@@ -37,7 +40,7 @@ const InformationPage = () => {
 		<div className="container">
 			<h1>Info about the tasks</h1>
 			<div className="informationText">
-				<p>You will now be faced with X Java code snippets.</p>
+				<p>You will now be faced with 6 Java code snippets.</p>
 				<br />
 				<p>
 					Your task is to either debug or comprehend the given code.

@@ -59,10 +59,9 @@ const Summary = (props) => {
 			}).catch((err) => console.log(err));
 
 			if (postDataResp.status === 200 && postLogsResp.status === 200) {
-				// await logout().then(() => {
-				// 	window.location.href = '/master-study-system/login';
-				// });
-				alert('Done');
+				await logout().then(() => {
+					window.location.href = '/master-study-system/thanks';
+				});
 			} else {
 				alert('Something went wrong. Please try again.');
 			}

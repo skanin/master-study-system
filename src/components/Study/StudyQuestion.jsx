@@ -14,7 +14,7 @@ import { fetch } from '../Auth/AuthHelperMethods';
 const StudyQuestion = (props) => {
 	const [subject] = useSubject();
 	const [answer, setAnswer] = useState('');
-	const [setLogs] = useLogger();
+	const [setLogs, getLogs] = useLogger();
 	const [question, setQuestion] = useState({});
 	const [getStudyAnswers, setStudyAnswers] = useStudyAnswers();
 	const [maxTaskId, setMaxTaskId] = useState(-1);
@@ -56,7 +56,33 @@ const StudyQuestion = (props) => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setStudyAnswers(props.taskId, answer);
-		if (parseInt(props.taskId) === maxTaskId) {
+
+		if (parseInt(props.taskId) % 2 !== 0 && subject.helpType % 2 !== 0) {
+			if (parseInt(props.taskId) + 3 <= maxTaskId) {
+				window.location.href = `/master-study-system/task/${
+					parseInt(props.taskId) + 3
+				}`;
+				return;
+			}
+		} else if (
+			parseInt(props.taskId) % 2 === 0 &&
+			subject.helpType % 2 !== 0
+		) {
+			alert('Heyo');
+			alert(parseInt(props.taskId) - 1);
+			if (parseInt(props.taskId) - 1 > 0) {
+				window.location.href = `/master-study-system/task/${
+					parseInt(props.taskId) - 1
+				}`;
+				return;
+			}
+		}
+
+		if (
+			parseInt(props.taskId) === maxTaskId ||
+			(parseInt(props.taskId) === maxTaskId - 1 &&
+				subject.helpType % 2 !== 0)
+		) {
 			const data = {
 				answers: Object.entries(
 					getStudyAnswers([
@@ -89,7 +115,7 @@ const StudyQuestion = (props) => {
 	};
 
 	const onHelpChange = () => {
-		setLogs(helpVisible ? 'showHelp' : 'hideHelp', {
+		setLogs(!helpVisible ? 'showHelp' : 'hideHelp', {
 			taskId: props.taskId,
 		});
 		const codeSection = document.getElementById('codeSection');
@@ -101,13 +127,20 @@ const StudyQuestion = (props) => {
 		setHelpVisible(!helpVisible);
 	};
 
-	const expertOnNext = (e) => {
+	const expertOnNext = async (e) => {
 		e.preventDefault();
 		if (parseInt(props.taskId) === maxTaskId) {
-			setLogs('expertProceed');
-			window.location.href = '/master-study-system/thanks';
-		} else {
 			setLogs('expertFinished');
+
+			await fetch('POST', '/logs', {
+				logs: getLogs(),
+			})
+				.then(() => {
+					window.location.href = '/master-study-system/thanks';
+				})
+				.catch((err) => console.log(err));
+		} else {
+			setLogs('expertProceed');
 			window.location.href = `/master-study-system/task/${
 				parseInt(props.taskId) + 1
 			}`;

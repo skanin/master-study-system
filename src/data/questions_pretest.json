@@ -21,7 +21,12 @@
 		"questions": [
 			{
 				"question": "What would be the outcome of this Java coding snippet?",
-				"answers": ["Welcome", "Welcome Welcome", "Type mismatch error", "Run infinite-times"],
+				"answers": [
+					"Welcome",
+					"Welcome Welcome",
+					"Type mismatch error",
+					"Run infinite-times"
+				],
 				"correct": 2
 			}
 		]
@@ -29,8 +34,13 @@
 	"4": {
 		"questions": [
 			{
-				"question": "What would this Java coding snippet print?",
-				"answers": ["Welcome", "None", "Type mismatch error", "Run infinite-times"],
+				"question": "What's the outcome of this Java coding snippet?",
+				"answers": [
+					"Welcome",
+					"None",
+					"Type mismatch error",
+					"Run infinite-times"
+				],
 				"correct": 0
 			}
 		]
@@ -66,7 +76,12 @@
 		"questions": [
 			{
 				"question": "What would this Java coding snippet return as its output?",
-				"answers": ["An exception occurs while instantiating the A class.", "It'll print “This is a class A instance”", "The program will print null", "Compilation error at line number 13"],
+				"answers": [
+					"An exception occurs while instantiating the A class.",
+					"It'll print “This is a class A instance”",
+					"The program will print null",
+					"Compilation error at line number 13"
+				],
 				"correct": 1
 			}
 		]
@@ -75,7 +90,12 @@
 		"questions": [
 			{
 				"question": "What would the this method yield when called?",
-				"answers": ["If a and b both are true, then the output is “A && B”", "If a is true and b is false, then the output is “!B”", "If a is false and b is true, then the output is “None”", "If a and b both are false, then the output is “None”"],
+				"answers": [
+					"If a and b both are true, then the output is “A && B”",
+					"If a is true and b is false, then the output is “!B”",
+					"If a is false and b is true, then the output is “None”",
+					"If a and b both are false, then the output is “None”"
+				],
 				"correct": 2
 			}
 		]

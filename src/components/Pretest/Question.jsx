@@ -11,7 +11,19 @@ const Question = (props) => {
 					id={index}
 					defaultChecked={index === props.checked}
 				/>{' '}
-				<Label check>{answer}</Label>
+				<Label
+					check
+					onClick={() => {
+						props.onQuestionChange({
+							target: {
+								name: 'radio' + props.id,
+								id: index,
+							},
+						});
+						document.getElementById(index).checked = true;
+					}}>
+					{answer}
+				</Label>
 			</FormGroup>
 		));
 	};
