@@ -54,6 +54,8 @@ const InformationPage = () => {
 					There are no time limit. Answer each question the best you
 					can.
 				</p>
+				<br />
+				<p>There will be no possibility to compile the code.</p>
 				{subject.helpType !== 4 && <h2>Help during the tasks</h2>}
 				{subject.helpType !== 4 && generateHelpText()}
 			</div>
