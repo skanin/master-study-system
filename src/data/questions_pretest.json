@@ -48,7 +48,7 @@
 	"5": {
 		"questions": [
 			{
-				"question": "Which of the following values would this Java coding snippet print in results?",
+				"question": "Which of the following values would this Java coding snippet print in result?",
 				"answers": ["0", "1", "2", "Compilation error"],
 				"correct": 1
 			}
