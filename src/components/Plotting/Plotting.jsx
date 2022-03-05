@@ -299,7 +299,7 @@ const Plotting = ({ taskId, fromStudy, codeSnippets, pretest, test }) => {
 							{disappearActual}s
 						</span>
 						<span>/</span>
-						<span className="disappearMax">60s</span>
+						<span className="disappearMax">{maxS}</span>
 					</span>
 
 					<input
