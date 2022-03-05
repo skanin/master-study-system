@@ -23,8 +23,9 @@ function Home() {
 			<h1>Information</h1>
 			<div className="informationText">
 				<p>
-					You will now be faced with X tasks. These tasks are meant
-					for detemining your level of programming expertise.
+					You will now be faced with 10 tasks. These tasks are meant
+					for detemining your level of programming expertise. There
+					will be no possibility to compile the code snippets
 				</p>
 				<br />
 				<p>
